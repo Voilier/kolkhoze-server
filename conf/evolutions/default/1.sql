@@ -1,3 +1,4 @@
+-- noinspection SqlDialectInspectionForFile
 # --- !Ups
 
 create table "people" (
@@ -12,7 +13,9 @@ create table "item" (
   "name" varchar not null,
   "itemType" int not null,
   "ownerId" bigint not null,
-  "lentId" bigint
+  "lentId" bigint,
+  FOREIGN KEY ("ownerId") REFERENCES "people"("id"),
+  FOREIGN KEY ("lentId") REFERENCES "people"("id")
 );
 
 # --- !Downs
