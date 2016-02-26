@@ -33,6 +33,7 @@ class PersonRepository @Inject() (dbConfigProvider: DatabaseConfigProvider)(impl
 
     def email = column[String]("email")
     def login = column[String]("login")
+    def password = column[String]("password")
 
     /**
      * This is the tables default "projection".
@@ -42,7 +43,7 @@ class PersonRepository @Inject() (dbConfigProvider: DatabaseConfigProvider)(impl
      * In this case, we are simply passing the id, name and page parameters to the Person case classes
      * apply and unapply methods.
      */
-    def * = (id, email, login) <> ((Person.apply _).tupled, Person.unapply)
+    def * = (id, email, login, password) <> ((Person.apply _).tupled, Person.unapply)
   }
 
   /**
@@ -56,16 +57,16 @@ class PersonRepository @Inject() (dbConfigProvider: DatabaseConfigProvider)(impl
    * This is an asynchronous operation, it will return a future of the created person, which can be used to obtain the
    * id for that person.
    */
-  def create(email: String, login: String): Future[Person] = db.run {
+  def create(email: String, login: String, password: String): Future[Person] = db.run {
     // We create a projection of just the name and age columns, since we're not inserting a value for the id column
-    (people.map(p => (p.email, p.login))
+    (people.map(p => (p.email, p.login, p.password))
       // Now define it to return the id, because we want to know what id was generated for the person
       returning people.map(_.id)
       // And we define a transformation for the returned value, which combines our original parameters with the
       // returned id
-      into ((peo, id) => Person(id, peo._1, peo._2))
+      into ((i, id) => Person(id, i._1, i._2, i._3))
     // And finally, insert the person into the database
-    ) += (email, login)
+    ) += (email, login, password)
   }
 
   /**

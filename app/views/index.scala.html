@@ -8,8 +8,9 @@
 	<ul id="persons"></ul>
 
   @form(routes.PersonController.addPerson()) {
-		@inputText(person("email"))
-		@inputText(person("login"))
+	  @inputText(person("email"))
+	  @inputText(person("login"))
+	  @inputText(person("password"))
 
 		<div class="buttons">
 			<input type="submit" value="Add Person"/>

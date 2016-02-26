@@ -23,7 +23,8 @@ class PersonController @Inject() (repo: PersonRepository, val messagesApi: Messa
   val personForm: Form[CreatePersonForm] = Form {
     mapping(
       "email" -> nonEmptyText,
-      "login" -> nonEmptyText
+      "login" -> nonEmptyText,
+      "password" -> nonEmptyText
     )(CreatePersonForm.apply)(CreatePersonForm.unapply)
   }
 
@@ -50,7 +51,7 @@ class PersonController @Inject() (repo: PersonRepository, val messagesApi: Messa
       },
       // There were no errors in the from, so create the person.
       person => {
-        repo.create(person.email, person.login).map { _ =>
+        repo.create(person.email, person.login, person.password).map { _ =>
           // If successful, we simply redirect to the index page.
           Redirect(routes.PersonController.index)
         }
@@ -75,4 +76,4 @@ class PersonController @Inject() (repo: PersonRepository, val messagesApi: Messa
  * in a different way to your models.  In this case, it doesn't make sense to have an id parameter in the form, since
  * that is generated once it's created.
  */
-case class CreatePersonForm(email: String, login: String)
+case class CreatePersonForm(email: String, login: String, password: String)
