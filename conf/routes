@@ -2,8 +2,10 @@
 # This file defines all application routes (Higher priority routes first)
 # ~~~~
 
+
+GET     /swagger.json           controllers.ApiHelpController.getResources
+
 # Person controller
-GET     /                           controllers.PersonController.index
 POST    /person/add                     controllers.PersonController.addPerson
 GET     /person/get                    controllers.PersonController.getPersons
 
@@ -14,8 +16,13 @@ GET     /item/get                      controllers.ItemController.getItems
 # ItemLent controller
 GET     /itemLent/get                      controllers.ItemLentController.getItemsLent
 
+#swagger
+GET     /                   controllers.Assets.at(path = "/public/lib/swagger-ui", file = "index.html")
+GET     /*file              controllers.Assets.at(path = "/public/lib/swagger-ui", file)
+
+
 
 
 # Map static resources from the /public folder to the /assets URL path
-GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
+#GET     /assets/*file               controllers.Assets.versioned(path="/public", file: Asset)
 
