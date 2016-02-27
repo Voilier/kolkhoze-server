@@ -32,3 +32,5 @@ GET     /item/getCount                       controllers.ItemController.getItems
 # ItemLent controller
 GET     /itemLent/get                   controllers.ItemLentController.getItemsLent
 
+
+GET     /user/get                       controllers.UserController.getUsers

@@ -1,5 +1,6 @@
 package controllers
 
+import io.swagger.annotations.Api
 import play.api._
 import play.api.mvc._
 import play.api.i18n._
@@ -14,6 +15,7 @@ import scala.concurrent.{ ExecutionContext, Future }
 
 import javax.inject._
 
+@Api(value = "/user", description = "Operations about users")
 class UserController @Inject() (repo: UserRepository, val messagesApi: MessagesApi)
                                  (implicit ec: ExecutionContext) extends Controller with I18nSupport {
 
