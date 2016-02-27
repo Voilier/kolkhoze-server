@@ -22,4 +22,17 @@ class UserController @Inject() (repo: UserRepository, val messagesApi: MessagesA
       Ok(Json.toJson(users))
     }
   }
+
+  def deleteUser(id: String) = Action.async {
+    val idParsed = id.toInt
+    repo.delete(idParsed).map { nbDelete =>
+      Ok(nbDelete.toString)
+    }
+  }
+
+  def updateUser(user: User) = Action.async {
+    repo.update(user).map { nbUpdate =>
+      Ok(nbUpdate.toString)
+    }
+  }
 }

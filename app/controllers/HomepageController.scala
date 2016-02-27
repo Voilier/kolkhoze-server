@@ -51,9 +51,9 @@ class HomepageController @Inject() (repo: UserRepository, val messagesApi: Messa
         Future.successful(Ok(views.html.login(errorForm)))
       },
       user => {
-        repo.list().map(users => users.find(_ == user)).map { _ =>
-          Redirect(routes.ItemController.getItems)
-        }
+        repo.list().map(users => users
+          .find(userLogin => userLogin.password == user.password && userLogin.login == user.login))
+          .map { _ => Redirect(routes.ItemController.getItems) }
       }
     )
   }

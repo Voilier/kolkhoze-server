@@ -1,3 +1,4 @@
+import models.forms.CreateSignupForm
 import org.specs2.mutable._
 import org.specs2.runner._
 import org.junit.runner._
@@ -24,6 +25,14 @@ class ApplicationSpec extends Specification {
 
       status(home) must equalTo(OK)
       contentType(home) must beSome.which(_ == "text/html")
+    }
+
+    "delete user should return 1" in new WithApplication{
+      /*val signup = route(FakeRequest(POST, "/signup")
+        .withFormUrlEncodedBody(("email", "hello"), ("login", "world"), ("password", "password"))).get*/
+      val delete = route(FakeRequest(DELETE, "/user/delete/1")).get
+
+      delete shouldEqual 1
     }
   }
 }
