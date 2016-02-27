@@ -58,6 +58,10 @@ class HomepageController @Inject() (repo: UserRepository, val messagesApi: Messa
     )
   }
 
+  def api = Action {
+    Ok(views.html.api())
+  }
+
   def login = Action {
     // TODO we'll add credentials and auth later
     Ok(views.html.login(loginForm))

@@ -8,7 +8,7 @@ GET     /api-docs.json           controllers.ApiHelpController.getResources
 # Map static resources from the /public folder to the /assets URL path
 GET     /assets/*file                   controllers.Assets.versioned(path="/public", file: Asset)
 
-
+GET     /api                        controllers.HomepageController.api
 
 
 
@@ -25,6 +25,7 @@ POST    /signup                         controllers.HomepageController.simpleSig
 
 # Items
 GET     /item/get                       controllers.ItemController.getItems
+GET     /item/getCount                       controllers.ItemController.getItems
 
 
 

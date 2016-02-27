@@ -35,13 +35,8 @@
 
   <script type="text/javascript">
     $(function () {
-      var url = window.location.search.match(/url=([^&]+)/);
-      if (url && url.length > 1) {
-        url = decodeURIComponent(url[1]);
-      } else {
-        url = "@{s"${current.configuration.getString("swagger.api.basepath")
-            .getOrElse("http://localhost:9000")}/api-docs.json"}"
-      }
+      var baseUrl = '@current.configuration.getString("swagger.api.basepath")';
+      var url = baseUrl + '/api-docs.json';
 
       hljs.configure({
         highlightSizeThreshold: 5000

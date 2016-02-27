@@ -14,7 +14,7 @@ import scala.concurrent.ExecutionContext
 class ItemController @Inject() (repo: ItemRepository, val messagesApi: MessagesApi)
                                  (implicit ec: ExecutionContext) extends Controller with I18nSupport {
   def getItems = Action.async {
-  	repo.list().map { item =>
+    repo.list().map { item =>
       Ok(Json.toJson(item))
     }
   }
