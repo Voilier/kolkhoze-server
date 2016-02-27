@@ -1,0 +1,17 @@
+@(user: Form[models.forms.CreateLoginForm])(implicit messages: Messages)
+@import helper._
+
+@main("Welcome to Play") {
+	<script type='text/javascript' src='@routes.Assets.versioned("javascripts/index.js")'></script>
+
+	<ul id="persons"></ul>
+
+  @form(routes.HomepageController.login) {
+	  @inputText(user("login"))
+	  @inputText(user("password"))
+
+		<div class="buttons">
+			<input type="submit" value="Add User"/>
+		</div>
+	}
+}

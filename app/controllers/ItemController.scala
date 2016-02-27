@@ -10,12 +10,7 @@ import play.api.mvc._
 import scala.concurrent.ExecutionContext
 
 class ItemController @Inject() (repo: ItemRepository, val messagesApi: MessagesApi)
-                                 (implicit ec: ExecutionContext) extends Controller with I18nSupport{
-
-
-  /**
-   * A REST endpoint that gets all the people as JSON.
-   */
+                                 (implicit ec: ExecutionContext) extends Controller with I18nSupport {
   def getItems = Action.async {
   	repo.list().map { item =>
       Ok(Json.toJson(item))

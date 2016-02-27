@@ -53,7 +53,7 @@ class PersonController @Inject() (repo: PersonRepository, val messagesApi: Messa
       person => {
         repo.create(person.email, person.login, person.password).map { _ =>
           // If successful, we simply redirect to the index page.
-          Redirect(routes.PersonController.index)
+          Redirect(routes.ItemController.getItems)
         }
       }
     )
