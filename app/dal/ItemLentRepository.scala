@@ -2,7 +2,7 @@ package dal
 
 import javax.inject.{Inject, Singleton}
 
-import models.Item
+import models.ItemLent
 import play.api.db.slick.DatabaseConfigProvider
 import slick.driver.JdbcProfile
 
@@ -10,7 +10,7 @@ import scala.concurrent.{ExecutionContext, Future}
 
 
 @Singleton
-class ItemRepository @Inject()(dbConfigProvider: DatabaseConfigProvider)(implicit ec: ExecutionContext) {
+class ItemLentRepository @Inject()(dbConfigProvider: DatabaseConfigProvider)(implicit ec: ExecutionContext) {
   // We want the JdbcProfile for this provider
   private val dbConfig = dbConfigProvider.get[JdbcProfile]
 
@@ -20,36 +20,36 @@ class ItemRepository @Inject()(dbConfigProvider: DatabaseConfigProvider)(implici
   import driver.api._
 
   //defining table
-  private class ItemTable(tag: Tag) extends Table[Item](tag, "item") {
+  private class ItemLentTable(tag: Tag) extends Table[ItemLent](tag, "itemLent") {
 
     /** The ID column, which is the primary key, and auto incremented */
     def id = column[Long]("id", O.PrimaryKey, O.AutoInc)
 
-    //name: String, itemType: Int, lentId: Long)
-    def name = column[String]("name")
-    def itemType = column[Int]("itemType")
+    def itemId = column[Long]("itemId")
+    def ownerId = column[Long]("ownerUserId")
+    def lentId = column[Long]("lentUserId")
 
     //projection
-    def * = (id, name, itemType) <> ((Item.apply _).tupled, Item.unapply)
+    def * = (id, itemId, ownerId, lentId) <> ((ItemLent.apply _).tupled, ItemLent.unapply)
   }
 
   //starting point
-  private val items = TableQuery[ItemTable]
+  private val itemsLent = TableQuery[ItemLentTable]
 
   //async
-  def create(name: String, itemType: Int): Future[Item] = db.run {
+  def create(itemId: Long, ownerId:Long, lentId: Long): Future[ItemLent] = db.run {
     // We create a projection of just the name and age columns, since we're not inserting a value for the id column
-    (items.map(p => (p.name, p.itemType))
+    (itemsLent.map(p => (p.itemId, p.ownerId, p.lentId))
       // Now define it to return the id, because we want to know what id was generated for the person
-      returning items.map(_.id)
+      returning itemsLent.map(_.id)
       // And we define a transformation for the returned value, which combines our original parameters with the
       // returned id
-      into ((ite, id) => Item(id, ite._1, ite._2))
+      into ((ite, id) => ItemLent(id, ite._1, ite._2, ite._3))
     // And finally, insert the person into the database
-    ) += (name, itemType)
+    ) += (itemId, ownerId, lentId)
   }
 
-  def list(): Future[Seq[Item]] = db.run {
-    items.result
+  def list(): Future[Seq[ItemLent]] = db.run {
+    itemsLent.result
   }
 }
